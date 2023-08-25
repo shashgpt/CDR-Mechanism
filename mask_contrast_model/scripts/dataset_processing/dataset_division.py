@@ -85,43 +85,25 @@ class Dataset_division(object):
     
     def train_val_test_split(self, dataset):
 
-        if os.path.exists("datasets/"+self.config["dataset_name"]+"/train_dataset.pickle") and os.path.exists("datasets/"+self.config["dataset_name"]+"/val_dataset.pickle") and os.path.exists("datasets/"+self.config["dataset_name"]+"/test_dataset.pickle"):
-            with open("datasets/"+self.config["dataset_name"]+"/train_dataset.pickle", "rb") as handle:
-                train_dataset = pickle.load(handle)
-            with open("datasets/"+self.config["dataset_name"]+"/val_dataset.pickle", "rb") as handle:
-                val_dataset = pickle.load(handle)
-            with open("datasets/"+self.config["dataset_name"]+"/test_dataset.pickle", "rb") as handle:
-                test_dataset = pickle.load(handle)
+        train_idx, test_idx = train_test_split(list(range(dataset.shape[0])), test_size=0.2, random_state=self.config["seed_value"])
+        train_idx, val_idx = train_test_split(train_idx, test_size=0.2, random_state=self.config["seed_value"])
+        train_dataset = dataset.iloc[train_idx].reset_index(drop=True)
+        val_dataset = dataset.iloc[val_idx].reset_index(drop=True)
+        test_dataset = dataset.iloc[test_idx].reset_index(drop=True)
+        val_datasets, test_datasets = self.divide_into_sections(val_dataset, test_dataset)
 
-            val_datasets, test_datasets = self.divide_into_sections(val_dataset, test_dataset)
-            for key, value in val_datasets.items():
-                val_datasets[key] = val_datasets[key].to_dict('list')
-            for key, value in test_datasets.items():
-                test_datasets[key] = test_datasets[key].to_dict('list')
-
-            return train_dataset, val_datasets, test_datasets
+        dataset = dataset.to_dict('list')
+        train_dataset = train_dataset.to_dict('list')
+        for key, value in val_datasets.items():
+            val_datasets[key] = val_datasets[key].to_dict('list')
+        for key, value in test_datasets.items():
+            test_datasets[key] = test_datasets[key].to_dict('list')
         
-        else:
+        with open("datasets/"+self.config["dataset_name"]+"/train_dataset.pickle", "wb") as handle:
+            pickle.dump(train_dataset, handle)
+        with open("datasets/"+self.config["dataset_name"]+"/val_dataset.pickle", "wb") as handle:
+            pickle.dump(val_datasets, handle)
+        with open("datasets/"+self.config["dataset_name"]+"/test_dataset.pickle", "wb") as handle:
+            pickle.dump(test_datasets, handle)
 
-            train_idx, test_idx = train_test_split(list(range(dataset.shape[0])), test_size=0.2, random_state=self.config["seed_value"])
-            train_idx, val_idx = train_test_split(train_idx, test_size=0.2, random_state=self.config["seed_value"])
-            train_dataset = dataset.iloc[train_idx].reset_index(drop=True)
-            val_dataset = dataset.iloc[val_idx].reset_index(drop=True)
-            test_dataset = dataset.iloc[test_idx].reset_index(drop=True)
-            val_datasets, test_datasets = self.divide_into_sections(val_dataset, test_dataset)
-
-            dataset = dataset.to_dict('list')
-            train_dataset = train_dataset.to_dict('list')
-            for key, value in val_datasets.items():
-                val_datasets[key] = val_datasets[key].to_dict('list')
-            for key, value in test_datasets.items():
-                test_datasets[key] = test_datasets[key].to_dict('list')
-            
-            with open("datasets/"+self.config["dataset_name"]+"/train_dataset.pickle", "wb") as handle:
-                pickle.dump(train_dataset, handle)
-            with open("datasets/"+self.config["dataset_name"]+"/val_dataset.pickle", "wb") as handle:
-                pickle.dump(val_dataset, handle)
-            with open("datasets/"+self.config["dataset_name"]+"/test_dataset.pickle", "wb") as handle:
-                pickle.dump(test_dataset, handle)
-
-            return train_dataset, val_datasets, test_datasets
+        return train_dataset, val_datasets, test_datasets

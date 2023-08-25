@@ -4,7 +4,7 @@
 # # Push your project to GitHub
 #   git init
 #   git rm --cached . -r
-#   git add --all -- ':!analysis_one_rule.ipynb' ':!analysis_one_rule_contrast.ipynb' ':!analysis_one_rule_no_contrast.ipynb' ':!commands.sh' ':!mask_model/scripts/' ':!mask_model/main.py' ':!mask_contrast_model/scripts/' ':!mask_contrast_model/main.py'
+#   git add files (--all -- ':!analysis_one_rule.ipynb' ':!analysis_one_rule_contrast.ipynb' ':!analysis_one_rule_no_contrast.ipynb' ':!commands.sh' ':!mask_model/scripts/' ':!mask_model/main.py' ':!mask_contrast_model/scripts/' ':!mask_contrast_model/main.py')
 #   git status
 #   git commit -m "Commit message"
 #   git branch -M main

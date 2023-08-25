@@ -140,15 +140,6 @@ class Preprocess_dataset(object):
 
     def preprocess_covid_tweets(self, dataset):
 
-        # # check if file already exists
-        # if os.path.exists("datasets/"+self.config["dataset_name"]+"/preprocessed_dataset.pickle"):
-        #     with open("datasets/"+self.config["dataset_name"]+"/preprocessed_dataset.pickle", "rb") as handle:
-        #         dataset = pickle.load(handle)
-        #         return dataset
-        
-        # else:
-
-        # Select columns
         dataset = dataset[['preprocessed_tweet','sentiment_label', 'rule_label', 'contrast']]
 
         # Select no rule, but, yet, though and while rule sentences
@@ -185,13 +176,9 @@ class Preprocess_dataset(object):
 
         # Save the dataframe as a pickle file
         dataset = dataset.to_dict()
-        # if not os.path.exists("assets/input_dataset/"+self.config["asset_name"]+"/"):
-        #     os.makedirs("assets/input_dataset/"+self.config["asset_name"]+"/")
-        # with open("assets/input_dataset/"+self.config["asset_name"]+"/"+"dataset.pickle", "wb") as handle:
-        #     pickle.dump(dataset, handle)
-        # if not os.path.exists("datasets/"+self.config["dataset_name"]+"/"):
-        #     os.makedirs("datasets/"+self.config["dataset_name"]+"/")
-        # with open("datasets/"+self.config["dataset_name"]+"/preprocessed_dataset.pickle", "wb") as handle:
-        #     pickle.dump(dataset, handle)
+        if not os.path.exists("datasets/"+self.config["dataset_name"]+"/"):
+            os.makedirs("datasets/"+self.config["dataset_name"]+"/")
+        with open("datasets/"+self.config["dataset_name"]+"/preprocessed_dataset.pickle", "wb") as handle:
+            pickle.dump(dataset, handle)
 
         return dataset

@@ -83,26 +83,8 @@ class Dataset_division(object):
 
         return val_datasets, test_datasets
     
-    def train_val_test_split(self, dataset=None):
+    def train_val_test_split(self, dataset):
 
-        # try:
-        #     if dataset==None:
-        #         with open("assets/input_dataset/"+self.config["asset_name"]+"/train_dataset.pickle", "rb") as handle:
-        #             train_dataset = pickle.load(handle)
-        #         with open("assets/input_dataset/"+self.config["asset_name"]+"/val_dataset.pickle", "rb") as handle:
-        #             val_dataset = pickle.load(handle)
-        #         with open("assets/input_dataset/"+self.config["asset_name"]+"/test_dataset.pickle", "rb") as handle:
-        #             test_dataset = pickle.load(handle)
-
-        #         val_datasets, test_datasets = self.divide_into_sections(val_dataset, test_dataset)
-        #         for key, value in val_datasets.items():
-        #             val_datasets[key] = val_datasets[key].to_dict('list')
-        #         for key, value in test_datasets.items():
-        #             test_datasets[key] = test_datasets[key].to_dict('list')
-
-        #         return train_dataset, val_datasets, test_datasets
-    
-        # except:
         train_idx, test_idx = train_test_split(list(range(dataset.shape[0])), test_size=0.2, random_state=self.config["seed_value"])
         train_idx, val_idx = train_test_split(train_idx, test_size=0.2, random_state=self.config["seed_value"])
         train_dataset = dataset.iloc[train_idx].reset_index(drop=True)
@@ -115,13 +97,13 @@ class Dataset_division(object):
         for key, value in val_datasets.items():
             val_datasets[key] = val_datasets[key].to_dict('list')
         for key, value in test_datasets.items():
-                test_datasets[key] = test_datasets[key].to_dict('list')
-            
-            # with open("assets/input_dataset/"+self.config["asset_name"]+"/train_dataset.pickle", "wb") as handle:
-            #     pickle.dump(train_dataset, handle)
-            # with open("assets/input_dataset/"+self.config["asset_name"]+"/val_dataset.pickle", "wb") as handle:
-            #     pickle.dump(val_dataset, handle)
-            # with open("assets/input_dataset/"+self.config["asset_name"]+"/test_dataset.pickle", "wb") as handle:
-            #     pickle.dump(test_dataset, handle)
+            test_datasets[key] = test_datasets[key].to_dict('list')
+        
+        with open("datasets/"+self.config["dataset_name"]+"/train_dataset.pickle", "wb") as handle:
+            pickle.dump(train_dataset, handle)
+        with open("datasets/"+self.config["dataset_name"]+"/val_dataset.pickle", "wb") as handle:
+            pickle.dump(val_datasets, handle)
+        with open("datasets/"+self.config["dataset_name"]+"/test_dataset.pickle", "wb") as handle:
+            pickle.dump(test_datasets, handle)
 
         return train_dataset, val_datasets, test_datasets

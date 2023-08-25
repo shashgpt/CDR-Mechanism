@@ -119,14 +119,17 @@ if __name__=='__main__':
     preprocessed_dataset = pd.DataFrame(preprocessed_dataset)
     word_vectors, word_index = Word_vectors(config).create_word_vectors(preprocessed_dataset)
     train_dataset, val_datasets, test_datasets = Dataset_division(config).train_val_test_split(preprocessed_dataset)
-
-    # preprocessed_dataset = pickle.load(open("datasets/covid19_dataset/dataset/dataset.pickle", "rb"))
-    # preprocessed_dataset = pd.DataFrame(preprocessed_dataset)
-    # with open("datasets/covid19_dataset/dataset/word_index.pickle", "rb") as handle:
-    #     word_index = pickle.load(handle)
-    # with open("datasets/covid19_dataset/dataset/word_vectors.npy", "rb") as handle:
-    #     word_vectors = np.load(handle)
-    # train_dataset, val_datasets, test_datasets = Dataset_division(config).train_val_test_split(preprocessed_dataset)
+    
+    # Reading existing created datasets and word vectors
+    preprocessed_dataset = pickle.load(open("datasets/"+config["dataset_name"]+"/preprocessed_dataset.pickle", "rb"))
+    preprocessed_dataset = pd.DataFrame(preprocessed_dataset)
+    with open("datasets/"+config["dataset_name"]+"/"+"/word_index.pickle", "rb") as handle:
+        word_index = pickle.load(handle)
+    with open("datasets/"+config["dataset_name"]+"/"+"/word_vectors.npy", "rb") as handle:
+        word_vectors = np.load(handle)
+    train_dataset = pickle.load(open("datasets/"+config["dataset_name"]+"/train_dataset.pickle", "rb"))
+    val_datasets = pickle.load(open("datasets/"+config["dataset_name"]+"/val_dataset.pickle", "rb"))
+    test_datasets = pickle.load(open("datasets/"+config["dataset_name"]+"/test_dataset.pickle", "rb"))
 
     # Create model
     print("\nBuilding model")
@@ -302,16 +305,16 @@ if __name__=='__main__':
     print("\nTraining")
     Train(config, word_index).train_model(model, train_dataset, val_datasets, test_datasets)
 
-    # Load trained model
-    model.load_weights("assets/trained_models/"+config["asset_name"]+".h5")
+    # # Load trained model
+    # model.load_weights("assets/trained_models/"+config["asset_name"]+".h5")
 
-    # Test model
-    print("\nEvaluation")
-    Evaluation(config, word_index).evaluate_model(model, test_datasets)
+    # # Test model
+    # print("\nEvaluation")
+    # Evaluation(config, word_index).evaluate_model(model, test_datasets)
 
-    # LIME explanations
-    print("\nLIME explanations")
-    Lime_explanations(config, model, word_index).create_lime_explanations()
+    # # LIME explanations
+    # print("\nLIME explanations")
+    # Lime_explanations(config, model, word_index).create_lime_explanations()
 
     # # Save the configuration parameters for this run (marks the creation of an asset)
     # if "test" not in config["asset_name"]: 

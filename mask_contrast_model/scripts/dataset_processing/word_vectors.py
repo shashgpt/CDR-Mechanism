@@ -46,26 +46,6 @@ class Word_vectors(object):
 
     def create_word_vectors(self, dataset):
         
-        # Load preprocessed dataset
-        # try:
-            # if dataset == None:
-                # with open("assets/input_dataset/"+self.config["asset_name"]+"/word_index.pickle", "rb") as handle:
-                #     word_index = pickle.load(handle)
-                # with open("assets/input_dataset/"+self.config["asset_name"]+"/word_vectors.npy", "rb") as handle:
-                #     word_vectors = np.load(handle)
-                # return word_vectors, word_index
-            
-        # # check if file already exists
-        # if os.path.exists("datasets/"+self.config["dataset_name"]+"/preprocessed_dataset.pickle") and os.path.exists("datasets/"+self.config["dataset_name"]+"/"+"/word_index.pickle") and os.path.exists("datasets/"+self.config["dataset_name"]+"/"+"/word_vectors.npy"):
-        #     with open("datasets/"+self.config["dataset_name"]+"/"+"/word_index.pickle", "rb") as handle:
-        #         word_index = pickle.load(handle)
-        #     with open("datasets/"+self.config["dataset_name"]+"/"+"/word_vectors.npy", "rb") as handle:
-        #         word_vectors = np.load(handle)
-        #     return word_vectors, word_index
-
-        # else:
-        # # except:
-        
         pre_trained_word_vectors = self.load_pre_trained_w2v()
         word_index = self.create_vocabulary(dataset)
 
@@ -87,10 +67,10 @@ class Word_vectors(object):
         print("\nWord vectors created")
         print("\nConverted %d words (%d misses)" % (hits, misses))
 
-        # with open("datasets/"+self.config["dataset_name"]+"/"+"/word_index.pickle", "wb") as handle:
-        #     pickle.dump(word_index, handle)
-        # with open("datasets/"+self.config["dataset_name"]+"/"+"/word_vectors.npy", "wb") as handle:
-        #     np.save(handle, word_vectors)
+        with open("datasets/"+self.config["dataset_name"]+"/"+"/word_index.pickle", "wb") as handle:
+            pickle.dump(word_index, handle)
+        with open("datasets/"+self.config["dataset_name"]+"/"+"/word_vectors.npy", "wb") as handle:
+            np.save(handle, word_vectors)
 
         return word_vectors, word_index
 
