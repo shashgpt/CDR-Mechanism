@@ -67,6 +67,9 @@ class Lime_explanations(object):
             explanations['sentence'].append(text)
             explanations['LIME_explanation'].append(explanation)
             explanations['LIME_explanation_normalised'].append(explanation_normalised)
+
+            if self.config["generate_explanation_for_one_instance"] == True:
+                break
         
         if not os.path.exists("assets/lime_explanations/"):
             os.makedirs("assets/lime_explanations/")

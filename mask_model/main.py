@@ -1,4 +1,5 @@
 import logging
+import sys
 import os
 import pickle
 import numpy as np
@@ -7,8 +8,9 @@ import tensorflow as tf
 import warnings
 import pandas as pd
 import argparse
-from tensorflow.keras.utils import plot_model
 import subprocess as sp
+import pprint
+from tensorflow.keras.utils import plot_model
 
 # Scrips imports
 # from scripts.config.config import load_configuration_parameters
@@ -32,28 +34,30 @@ logging.disable(logging.WARNING)
 os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"
 warnings.filterwarnings("ignore")
 
-# # Set memory growth to True
-# def mask_unused_gpus(leave_unmasked=1): # No of avaialbe GPUs on the system
-#     COMMAND = "nvidia-smi --query-gpu=memory.free --format=csv"
-#     try:
-#         _output_to_list = lambda x: x.decode('ascii').split('\n')[:-1]
-#         memory_free_info = _output_to_list(sp.check_output(COMMAND.split()))[1:]
-#         memory_free_values = [int(x.split()[0]) for i, x in enumerate(memory_free_info)]
-#         available_gpus = [i for i, x in enumerate(memory_free_values)]
-#         if len(available_gpus) < leave_unmasked: raise ValueError('Found only %d usable GPUs in the system' % len(available_gpus))
-#         gpu_with_highest_free_memory = 0
-#         highest_free_memory = 0
-#         for index, memory in enumerate(memory_free_values):
-#             if memory > highest_free_memory:
-#                 highest_free_memory = memory
-#                 gpu_with_highest_free_memory = index
-#         return str(gpu_with_highest_free_memory)
-#     except Exception as e:
-#         print('"nvidia-smi" is probably not installed. GPUs are not masked', e)
-# os.environ["CUDA_VISIBLE_DEVICES"] = mask_unused_gpus()
-# gpus = tf.config.experimental.list_physical_devices('GPU')
-# for gpu in gpus:
-#     tf.config.experimental.set_memory_growth(gpu, True)
+# set the gpu execution device with highest free memory
+def mask_unused_gpus(leave_unmasked=1): # No of avaialbe GPUs on the system
+    COMMAND = "nvidia-smi --query-gpu=memory.free --format=csv"
+    try:
+        _output_to_list = lambda x: x.decode('ascii').split('\n')[:-1]
+        memory_free_info = _output_to_list(sp.check_output(COMMAND.split()))[1:]
+        memory_free_values = [int(x.split()[0]) for i, x in enumerate(memory_free_info)]
+        available_gpus = [i for i, x in enumerate(memory_free_values)]
+        if len(available_gpus) < leave_unmasked: raise ValueError('Found only %d usable GPUs in the system' % len(available_gpus))
+        gpu_with_highest_free_memory = 0
+        highest_free_memory = 0
+        for index, memory in enumerate(memory_free_values):
+            if memory > highest_free_memory:
+                highest_free_memory = memory
+                gpu_with_highest_free_memory = index
+        return str(gpu_with_highest_free_memory)
+    except Exception as e:
+        print('\n"nvidia-smi" is probably not installed. GPUs are not masked', e)
+os.environ["CUDA_VISIBLE_DEVICES"] = mask_unused_gpus()
+
+# set the memory growth to true
+gpus = tf.config.experimental.list_physical_devices('GPU')
+for gpu in gpus:
+    tf.config.experimental.set_memory_growth(gpu, True)
 
 if __name__=='__main__':
 
@@ -101,9 +105,21 @@ if __name__=='__main__':
     parser.add_argument("--hidden_units_mask_embedder",
                         type=int,
                         required=True)
+    parser.add_argument("--generate_explanation_for_one_instance",
+                        type=bool,
+                        required=True)
     args = parser.parse_args()
     config = vars(args)
-    print("\n"+config["asset_name"])
+    print("\n")
+    pprint.pprint(config)
+    print("\n")
+
+    #log the output
+    old_stdout = sys.stdout
+    if not os.path.exists("assets/run_logs/"):
+        os.makedirs("assets/run_logs/")
+    log_file = open("assets/run_logs/"+config["asset_name"]+".txt","w")
+    sys.stdout = log_file
 
     # Set seed value
     os.environ['PYTHONHASHSEED']=str(config["seed_value"])
@@ -111,18 +127,18 @@ if __name__=='__main__':
     np.random.seed(config["seed_value"])
     tf.random.set_seed(config["seed_value"])
 
-    # Create input data for model
-    print("\nCreating input data")
-    raw_dataset = pickle.load(open("datasets/"+config["dataset_name"]+"/raw_dataset.pickle", "rb"))
-    raw_dataset = pd.DataFrame(raw_dataset)
-    preprocessed_dataset = Preprocess_dataset(config).preprocess_covid_tweets(raw_dataset)
-    preprocessed_dataset = pd.DataFrame(preprocessed_dataset)
-    word_vectors, word_index = Word_vectors(config).create_word_vectors(preprocessed_dataset)
-    train_dataset, val_datasets, test_datasets = Dataset_division(config).train_val_test_split(preprocessed_dataset)
+    # # Create input data for model
+    # print("\nCreating input data")
+    # raw_dataset = pickle.load(open("datasets/"+config["dataset_name"]+"/raw_dataset.pickle", "rb"))
+    # raw_dataset = pd.DataFrame(raw_dataset)
+    # preprocessed_dataset = Preprocess_dataset(config).preprocess_covid_tweets(raw_dataset)
+    # preprocessed_dataset = pd.DataFrame(preprocessed_dataset)
+    # word_vectors, word_index = Word_vectors(config).create_word_vectors(preprocessed_dataset)
+    # train_dataset, val_datasets, test_datasets = Dataset_division(config).train_val_test_split(preprocessed_dataset)
     
     # Reading existing created datasets and word vectors
-    preprocessed_dataset = pickle.load(open("datasets/"+config["dataset_name"]+"/preprocessed_dataset.pickle", "rb"))
-    preprocessed_dataset = pd.DataFrame(preprocessed_dataset)
+    # preprocessed_dataset = pickle.load(open("datasets/"+config["dataset_name"]+"/preprocessed_dataset.pickle", "rb"))
+    # preprocessed_dataset = pd.DataFrame(preprocessed_dataset)
     with open("datasets/"+config["dataset_name"]+"/"+"/word_index.pickle", "rb") as handle:
         word_index = pickle.load(handle)
     with open("datasets/"+config["dataset_name"]+"/"+"/word_vectors.npy", "rb") as handle:
@@ -250,29 +266,33 @@ if __name__=='__main__':
     model.summary(line_length=150)
     if not os.path.exists("assets/computation_graphs"):
         os.makedirs("assets/computation_graphs")
-    plot_model(model, show_shapes=True, to_file="assets/computation_graphs/"+config["asset_name"]+".png")
+    # plot_model(model, show_shapes=True, to_file="assets/computation_graphs/"+config["asset_name"]+".png")
 
     # Train model
+    print("\nGPU execution device: ", mask_unused_gpus())
     print("\nTraining")
-    model = Train(config, word_index).train_model(model, train_dataset, val_datasets, test_datasets)
+    Train(config, word_index).train_model(model, train_dataset, val_datasets, test_datasets)
 
-    # # Load trained model
-    # model.load_weights("assets/trained_models/"+config["asset_name"]+".h5")
+    # Load trained model
+    model.load_weights("assets/trained_models/"+config["asset_name"]+".h5")
 
-    # # Test model
-    # print("\nEvaluation")
-    # Evaluation(config, word_index).evaluate_model(model, test_datasets)
+    # Test model
+    print("\nEvaluation")
+    Evaluation(config, word_index).evaluate_model(model, test_datasets)
 
-    # # LIME explanations
-    # print("\nLIME explanations")
-    # Lime_explanations(config, model, word_index).create_lime_explanations()
+    # LIME explanations
+    print("\nLIME explanations")
+    Lime_explanations(config, model, word_index).create_lime_explanations()
 
-    # # Save the configuration parameters for this run (marks the creation of an asset)
-    # if "test" not in config["asset_name"]: 
-    #     if not os.path.exists("assets/configurations/"):
-    #         os.makedirs("assets/configurations/")
-    #     with open("assets/configurations/"+config["asset_name"]+".pickle", 'wb') as handle:
-    #         pickle.dump(config, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    # Save the configuration parameters for this run (marks the creation of an asset)
+    if not os.path.exists("assets/configurations/"):
+        os.makedirs("assets/configurations/")
+    with open("assets/configurations/"+config["asset_name"]+".pickle", 'wb') as handle:
+        pickle.dump(config, handle, protocol=pickle.HIGHEST_PROTOCOL)
+    
+    #close the logfile
+    sys.stdout = old_stdout
+    log_file.close()
 
     # # Load SST2 dataset
     # x = pickle.load(open("datasets/SST2_sentences/stsa.binary.p","rb"))

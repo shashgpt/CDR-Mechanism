@@ -37,7 +37,8 @@ def lstm_bilstm_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -67,7 +68,8 @@ def bilstm_bilstm_mask(config, word_vectors):
     
     # The model
     model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
-    
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])
+
     return model
 
 def bigru_bilstm_mask(config, word_vectors):
@@ -96,6 +98,7 @@ def bigru_bilstm_mask(config, word_vectors):
     
     # The model
     model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])
     
     return model
 
@@ -125,7 +128,8 @@ def gru_bilstm_mask(config, word_vectors):
     
     # The model
     model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
-    
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])
+
     return model
 
 def birnn_bilstm_mask(config, word_vectors):
@@ -153,7 +157,8 @@ def birnn_bilstm_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -182,7 +187,8 @@ def rnn_bilstm_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -212,7 +218,8 @@ def rnn_bigru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -241,7 +248,8 @@ def birnn_bigru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -270,7 +278,8 @@ def gru_bigru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -299,7 +308,8 @@ def bigru_bigru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -328,7 +338,8 @@ def lstm_bigru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -357,7 +368,8 @@ def bilstm_bigru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -387,7 +399,8 @@ def rnn_lstm_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -416,7 +429,8 @@ def birnn_lstm_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -445,7 +459,8 @@ def gru_lstm_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -474,7 +489,8 @@ def bigru_lstm_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -503,7 +519,8 @@ def lstm_lstm_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -532,7 +549,8 @@ def bilstm_lstm_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -562,7 +580,8 @@ def rnn_rnn_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -591,7 +610,8 @@ def birnn_rnn_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -620,7 +640,8 @@ def gru_rnn_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -649,7 +670,8 @@ def bigru_rnn_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -678,7 +700,8 @@ def lstm_rnn_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -707,7 +730,8 @@ def bilstm_rnn_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -737,7 +761,8 @@ def rnn_gru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -766,7 +791,8 @@ def birnn_gru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -795,7 +821,8 @@ def gru_gru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -824,7 +851,8 @@ def bigru_gru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -853,7 +881,8 @@ def lstm_gru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -882,7 +911,8 @@ def bilstm_gru_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -912,7 +942,8 @@ def rnn_birnn_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -941,7 +972,8 @@ def birnn_birnn_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -970,7 +1002,8 @@ def gru_birnn_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -999,7 +1032,8 @@ def bigru_birnn_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -1028,7 +1062,8 @@ def lstm_birnn_mask(config, word_vectors):
     out = layers.Dense(1, activation='sigmoid', name='output')(out)
     
     # The model
-    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
+    model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])    
     
     return model
 
@@ -1058,7 +1093,8 @@ def bilstm_birnn_mask(config, word_vectors):
     
     # The model
     model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
-    
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])
+
     return model
 
 # BERT mask
@@ -1088,5 +1124,6 @@ def bilstm_birnn_mask(config, word_vectors):
     
     # The model
     model = keras.models.Model(inputs=[input_sentence], outputs=[out, mask])    
-    
+    model.compile(tf.keras.optimizers.legacy.Adam(learning_rate=config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])
+
     return model

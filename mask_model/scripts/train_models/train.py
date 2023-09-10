@@ -52,8 +52,8 @@ class Train(object):
     def train_model(self, model, train_dataset, val_datasets, test_datasets):
 
         # Make paths
-        if not os.path.exists("assets/training_log/"):
-            os.makedirs("assets/training_log/")
+        if not os.path.exists("assets/training_history/"):
+            os.makedirs("assets/training_history/")
 
         # Create Train and Val datasets
         train_sentences = self.vectorize(train_dataset["sentence"])
@@ -92,17 +92,14 @@ class Train(object):
         my_callbacks = [early_stopping_callback, AdditionalValidationSets(additional_validation_datasets, self.config)]
 
         # Train the model
-        model.compile(tf.keras.optimizers.Adam(learning_rate=self.config["learning_rate"]), loss=['binary_crossentropy', 'binary_crossentropy'], metrics=['accuracy'])
         model.fit(x=train_dataset[0], 
-                        y=train_dataset[1], 
-                        batch_size=self.config["mini_batch_size"], 
-                        epochs=self.config["train_epochs"], 
-                        validation_data=val_dataset, 
-                        callbacks=my_callbacks)
+                    y=train_dataset[1], 
+                    batch_size=self.config["mini_batch_size"], 
+                    epochs=self.config["train_epochs"], 
+                    validation_data=val_dataset, 
+                    callbacks=my_callbacks)
 
         # Save trained model
         if not os.path.exists("assets/trained_models/"):
             os.makedirs("assets/trained_models/")
         model.save_weights("assets/trained_models/"+self.config["asset_name"]+".h5")
-
-        return model

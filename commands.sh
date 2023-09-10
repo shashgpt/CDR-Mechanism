@@ -3,8 +3,7 @@
 ##### GITHUB commands #####
 # # Push your project to GitHub
 #   git init
-#   git rm --cached . -r
-#   git add files (--all -- ':!analysis_one_rule.ipynb' ':!analysis_one_rule_contrast.ipynb' ':!analysis_one_rule_no_contrast.ipynb' ':!commands.sh' ':!mask_model/scripts/' ':!mask_model/main.py' ':!mask_contrast_model/scripts/' ':!mask_contrast_model/main.py')
+#   git add files --all -- ':!analysis_one_rule.ipynb' ':!analysis_one_rule_contrast.ipynb' ':!analysis_one_rule_no_contrast.ipynb' ':!commands.sh' ':!mask_model/scripts/' ':!mask_model/main.py' ':!mask_model/config.sh' ':!mask_model/run.sh' ':!mask_contrast_model/scripts/' ':!mask_contrast_model/main.py' ':!mask_contrast_model/config.sh' ':!mask_contrast_model/run.sh'
 #   git status
 #   git commit -m "Commit message"
 #   git branch -M main
@@ -23,14 +22,15 @@
 # Kill all screens on a GCP vm: pkill screen
 # Kill screens for a particular model on a GCP vm: screen -ls | egrep "lstm_rnn_mask_rnn_contrast_model-MASK_OUTPUT_CORRECTED-TRAINED_ON_SERVER" | awk -F "." '{print $1}'| xargs kill
 # Start a screen: screen -S "screen" -d -m taskset --cpu-list 0 python main.py
+# Kill processes for a specific user on a server: pkill -u guptashas screen
 ###########################
 
 ##### DOCKER commands #####
 # 0)Create an empty Dockerfile: touch Dockerfile
 # 1)Pull an image from docker-hub: sudo docker pull tensorflow/tensorflow:latest-gpu-jupyter
 # 2)Run the docker image:
-    # sudo docker run --mount type=bind,source="$(pwd)",target=/LRD-BNN-mask --gpus all -it -p 8000:8000 --rm tensorflow/tensorflow:latest-gpu-jupyter bash
-    # sudo docker run --mount type=bind,source="$(pwd)",target=/LRD-BNN-mask --gpus all -it -p 8000:8000 --rm  pytorch/pytorch:latest bash
+    # sudo docker run --mount type=bind,source="$(pwd)",target=/CDR-mechanism --gpus all -it -p 8000:8000 --rm tensorflow/tensorflow:latest-gpu-jupyter bash
+    # sudo docker run --mount type=bind,source="$(pwd)",target=/CDR-mechanism --gpus all -it -p 8000:8000 --rm pytorch/pytorch:latest bash
 # 3)Install libraries and develop
 # 4)Commit a docker container (with all installed libraries)
     # a) Identify the container ID outside the container: sudo docker ps
@@ -51,8 +51,10 @@
 ###########################
 
 ##### Interacting with pippin or luthin servers #####
-# sshpass -p "#Deakin2630" rsync -a --relative mask_contrast_model/ --exclude-from 'list_of_files_not_to_send_to_server.txt' guptashas@luthin.it.deakin.edu.au:/home/guptashas/PhD_experiments/CDR-mechanism/ => sending code to server
-# sshpass -p "#Deakin2630" rsync -a --exclude-from 'list_of_files_not_to_receive_from_server.txt' guptashas@luthin.it.deakin.edu.au:/home/guptashas/PhD_experiments/LRD-mask/mask_model/ mask_model/ => receiving code from the server
+# Sending code to server
+# sshpass -p "#Deakin2630" rsync -a --relative mask_model/ --exclude-from 'list_of_files_not_to_send_to_server.txt' guptashas@luthin.it.deakin.edu.au:/home/guptashas/PhD_experiments/CDR-mechanism/
+# Receiving code from the server
+# sshpass -p "#Deakin2630" rsync -a --exclude-from 'list_of_files_not_to_receive_from_server.txt' guptashas@luthin.it.deakin.edu.au:/home/guptashas/PhD_experiments/LRD-mask/mask_model/ mask_model/
 #####################################################
 
 ##### ALWAYS Remember #####

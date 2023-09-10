@@ -58,5 +58,5 @@ class AdditionalValidationSets(keras.callbacks.Callback):
                 self.history.setdefault(valuename, []).append(result)
     
     def on_train_end(self, logs=None):
-        with open("assets/training_log/"+self.config["asset_name"]+".pickle", 'wb') as handle:
+        with open("assets/training_history/"+self.config["asset_name"]+".pickle", 'wb') as handle:
             pickle.dump(self.history, handle)
